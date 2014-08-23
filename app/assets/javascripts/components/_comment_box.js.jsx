@@ -8,7 +8,7 @@ var data = [
 ];
 
 function getCommentsFromServer() {
-    return data;
+    return [];
 }
 
 function postNewCommentToServer(author, text) {
@@ -42,7 +42,7 @@ var CommentList = React.createClass({
         if (commentNodes.length > 0) {
             return(<div className="commentList">{commentNodes}</div>);
         }
-        return(<div className="commentList">No comments so far.</div>);
+        return(<div className="commentList">No comments.</div>);
     }
 });
 
@@ -78,10 +78,9 @@ var CommentBox = React.createClass({
         this.setState({data: postNewCommentToServer(comment.author, comment.text)});
     },
     getInitialState: function() {
-        return {data: []};
+        return {data: this.props.comments || []};
     },
     componentDidMount: function () {
-        this.loadCommentsFromServer();
         setInterval(this.loadCommentsFromServer, this.props.pollInterval);
     },
     render: function() {
