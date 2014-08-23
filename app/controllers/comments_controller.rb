@@ -1,5 +1,6 @@
 class CommentsController < ApplicationController
 
+  respond_to :json
   def index
     comments = Comment.all.map { |c|
       c.attributes.select { |k, v| ['id', 'author', 'text'].include?(k) }
@@ -19,6 +20,11 @@ class CommentsController < ApplicationController
         }
       }
     end
+  end
+
+  def create
+    c = Comment.create!(author: params[:author], text: params[:text])
+    render :json => c
   end
 
 end

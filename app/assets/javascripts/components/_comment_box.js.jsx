@@ -1,19 +1,17 @@
 /** @jsx React.DOM */
-// The above declaration must remain intact at tht top of the script.
-// Your code here
+// The above declaration must remain intact at the top of the script.
 
 var data = [
     {author: "Olli Vanhapiha", text: "Rails Conventions move the world forward."},
     {author: "Jordan Walke", text: "This is yet *another* sarcastic comment."}
 ];
 
-function getCommentsFromServer() {
-    return [];
+function getCommentsFromServer(success) {
+    $.get("/comments", success, "json");
 }
 
 function postNewCommentToServer(author, text) {
-    data.push({author: author, text: text});
-    return data;
+    $.post("/comments", {author: author, text: text}, null, "json");
 }
 
 var converter = new Showdown.converter();
@@ -72,10 +70,11 @@ var CommentForm = React.createClass({
 
 var CommentBox = React.createClass({
     loadCommentsFromServer: function () {
-        this.setState({data: getCommentsFromServer()});
+	var that = this;
+	getCommentsFromServer(function (comments) { that.setState({data: comments}) });
     },
     handleCommentSubmit: function(comment) {
-        this.setState({data: postNewCommentToServer(comment.author, comment.text)});
+        postNewCommentToServer(comment.author, comment.text);
     },
     getInitialState: function() {
         return {data: this.props.comments || []};
