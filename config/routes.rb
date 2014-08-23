@@ -56,6 +56,6 @@ ReactComments::Application.routes.draw do
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id))(.:format)'
 
-  resource :comments
-  root :to => 'comments#list'
+  resources :comments
+  root :to => redirect('/comments')
 end
